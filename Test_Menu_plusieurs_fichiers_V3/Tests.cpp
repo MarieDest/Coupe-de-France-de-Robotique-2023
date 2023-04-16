@@ -11,6 +11,10 @@ Servo servo_bras; // création de l'objet "servo"
 Servo servo_epaule; // création de l'objet "servo"
 bool notInterrupted_moteur = true;
 const int stepsPerRevolution = 2048;
+int incomingByte ;      
+char myStr[1000];
+char value;
+char time;
 // Câblage:
 // Broche 10 à IN1 sur le pilote ULN2003
 // Broche 8 à IN2 sur le pilote ULN2003
@@ -45,9 +49,37 @@ void setup_Moteur()
 void setInterruption(bool noInterrupt){
   notInterrupted_moteur = noInterrupt;
 }
+void lecture_Serial_Comm(){
+  //serial comm en 9600
+      Serial.print("I received: ");
+      while (Serial.available() > 0) {
+            
+//         for (int i = 0; i < sizeof(myStr) - 1; i++)
+//         {
+//          incomingByte = Serial.read();
+//           myStr[i]=incomingByte;
+//           Serial.print(myStr[i]);
+//        }
+
+        value = Serial.read();
+        
+        if (value =='T'){
+          while (value !='U'){
+            value = Serial.read();
+            time = value;
+            if (value !='U'){
+            Serial.print(time);
+            }
+          }
+          Serial.println();
+        }
+      }
+
+
+}
 void Test_1M() 
 {
-   digitalWrite(45, HIGH);
+  digitalWrite(45, HIGH);
   digitalWrite(47, HIGH); 
   digitalWrite(49, HIGH);
   digitalWrite(X_ENABLE_PIN, LOW);
