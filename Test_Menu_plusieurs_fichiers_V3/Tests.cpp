@@ -84,20 +84,22 @@ void Test_1M()
   digitalWrite(49, HIGH);
   digitalWrite(X_ENABLE_PIN, LOW);
   digitalWrite(Y_ENABLE_PIN, LOW);
-  digitalWrite(X_DIR_PIN, HIGH);
-  digitalWrite(Y_DIR_PIN, LOW);
+  digitalWrite(X_DIR_PIN, LOW);
+  digitalWrite(Y_DIR_PIN, HIGH);
   digitalWrite(X_STEP_PIN, HIGH);
   digitalWrite(Y_STEP_PIN, HIGH);
   
-
-
+  float Rayon_roue = 47 ;
+  float  degre_par_pas = 1.8;
+  float perimetre = 2 * PI * Rayon_roue;
+  float distance_par_pas = (degre_par_pas/360)* perimetre;
 	
-	for (int i = 0; i <= 320000; i++)
+	for (float i = 0; i <= 1000; i+=distance_par_pas)
 	{ 
 	  if(notInterrupted_moteur ){//digitalRead(21)==LOW
   		digitalWrite(X_STEP_PIN, HIGH);
   		digitalWrite(Y_STEP_PIN, HIGH);
-  		delay(50);
+  		delay(1);
   		digitalWrite(X_STEP_PIN, LOW);
   		digitalWrite(Y_STEP_PIN, LOW);
   	}else{
@@ -105,7 +107,7 @@ void Test_1M()
   	}
 	}
 
-	//delay(5000);
+	delay(5000000);
 	//trajet dans l'autre sens dans l'autre sens
 
 	//digitalWrite(X_DIR_PIN, LOW);
