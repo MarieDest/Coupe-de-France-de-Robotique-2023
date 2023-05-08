@@ -1,9 +1,10 @@
 
-#include "Programme_Principal.h"
+#include "Programme Principal.h"
 #include "Homologation.h"
 #include "Tests.h"
 #include "Menu.h"
 #include "Relays.h"
+#include "Communication.h"
 
 
 String Programme_a_lancer[3][3] = {
@@ -17,9 +18,15 @@ bool notInterrupted = true;
 
 void iSR()
 {
-  Serial.println("Interruption");
-  notInterrupted = false;
-  setInterruption(false);
+  if(notInterrupted && digitalRead(21)){
+    Serial.println("Interruption");
+    notInterrupted = false;
+    setInterruption(false);
+  }else{
+    Serial.println("Fin Interruption");
+    notInterrupted = true;
+    setInterruption(true);
+  }
 }
 void iSR2()
 {
@@ -34,8 +41,9 @@ void setup() {
   setup_Moteur();
   //setupRelay();
   pinMode(35, OUTPUT);
-  
- attachInterrupt(digitalPinToInterrupt(21), iSR, RISING);
+  setEtat("Avance");
+  setupComm();
+ attachInterrupt(digitalPinToInterrupt(21), iSR, CHANGE);
  // attachInterrupt(digitalPinToInterrupt(3), iSR2, FALLING);// on ne peut pas avoir 2 interruptions sur le meme pin.
 }
 
@@ -47,6 +55,7 @@ void loop() {
 	//	delay(1000);				// attends 2 sec 
 	//	relay_SetStatus(ON, ON);	//avant d'allumer le deuxi�me relay
 	//}
+  
 	digitalWrite(35, LOW);
 	if( notInterrupted){
 		if (MenuChoisi == LOW) {
@@ -61,7 +70,7 @@ void loop() {
 				Serial.print(COULEUR);
 			}
 		}
-		delay(500);
+	 delay(150);
    if(MenuChoisi){
 		// lancement du programme d�termin� dans le menu avant. 
 		switch (MenuEtage1) {
@@ -80,6 +89,8 @@ void loop() {
 			else if (MenuEtage2 == 2) { programme_principal_finale(); }
 			break;
 		}
-   }
+   } 
+  
 	}
+ 
 }

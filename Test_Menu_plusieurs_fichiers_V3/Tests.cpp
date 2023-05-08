@@ -6,15 +6,13 @@
 #include <Arduino.h>
 #include "Servo.h"
 #include <Stepper.h>
+#include "Communication.h"
 
 Servo servo_bras; // création de l'objet "servo"
 Servo servo_epaule; // création de l'objet "servo"
 bool notInterrupted_moteur = true;
 const int stepsPerRevolution = 2048;
-int incomingByte ;      
-char myStr[1000];
-char value;
-char time;
+
 // Câblage:
 // Broche 10 à IN1 sur le pilote ULN2003
 // Broche 8 à IN2 sur le pilote ULN2003
@@ -49,34 +47,7 @@ void setup_Moteur()
 void setInterruption(bool noInterrupt){
   notInterrupted_moteur = noInterrupt;
 }
-void lecture_Serial_Comm(){
-  //serial comm en 9600
-      Serial.print("I received: ");
-      while (Serial.available() > 0) {
-            
-//         for (int i = 0; i < sizeof(myStr) - 1; i++)
-//         {
-//          incomingByte = Serial.read();
-//           myStr[i]=incomingByte;
-//           Serial.print(myStr[i]);
-//        }
 
-        value = Serial.read();
-        
-        if (value =='T'){
-          while (value !='U'){
-            value = Serial.read();
-            time = value;
-            if (value !='U'){
-            Serial.print(time);
-            }
-          }
-          Serial.println();
-        }
-      }
-
-
-}
 void Test_1M() 
 {
   digitalWrite(45, HIGH);
@@ -84,30 +55,46 @@ void Test_1M()
   digitalWrite(49, HIGH);
   digitalWrite(X_ENABLE_PIN, LOW);
   digitalWrite(Y_ENABLE_PIN, LOW);
-  digitalWrite(X_DIR_PIN, LOW);
-  digitalWrite(Y_DIR_PIN, HIGH);
+  digitalWrite(X_DIR_PIN, HIGH);
+  digitalWrite(Y_DIR_PIN, LOW);
   digitalWrite(X_STEP_PIN, HIGH);
   digitalWrite(Y_STEP_PIN, HIGH);
   
-  float Rayon_roue = 47 ;
-  float  degre_par_pas = 1.8;
+
+
+	 float Rayon_roue = 47 ;
+  float  degre_par_pas = 1.8; //200 pas par tour 
+  //1 tour   =   perimetre
+  // x pas   = 1 mètre
+
+  //X  = 1/perimètre
+  //combien de pas pour faire 1 mètre
+  
   float perimetre = 2 * PI * Rayon_roue;
   float distance_par_pas = (degre_par_pas/360)* perimetre;
-	
-	for (float i = 0; i <= 1000; i+=distance_par_pas)
+  Serial.println("perimètre = "+(String)perimetre);
+  Serial.println("distance_par_pas = "+(String) distance_par_pas);
+	for (int i = 0; i <= 10869; i++) //10000  pas  = 920 mm     
+	                                  // X pas = 1000mm  
+	                                  
+	                                  // 10 000 x 1000/920 = X pas
+                                    
 	{ 
-	  if(notInterrupted_moteur ){//digitalRead(21)==LOW
+   // printSerial("Av");
+    
+	  if( true){//digitalRead(21)==LOW   notInterrupted_moteur
   		digitalWrite(X_STEP_PIN, HIGH);
   		digitalWrite(Y_STEP_PIN, HIGH);
   		delay(1);
   		digitalWrite(X_STEP_PIN, LOW);
   		digitalWrite(Y_STEP_PIN, LOW);
+      Serial.println(i);
   	}else{
 
   	}
 	}
 
-	delay(5000000);
+	//delay(5000);
 	//trajet dans l'autre sens dans l'autre sens
 
 	//digitalWrite(X_DIR_PIN, LOW);
@@ -120,7 +107,7 @@ void Test_1M()
 	//	digitalWrite(X_STEP_PIN, LOW);
 	//	digitalWrite(Y_STEP_PIN, LOW);
 	//}
-	//delay(99999999999);
+	delay(99999999999);
 }
 void Test_360_degres()
 {

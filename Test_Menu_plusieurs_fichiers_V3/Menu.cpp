@@ -1,6 +1,6 @@
 #include <Arduino.h>
 #include "Menu.h"
-#include "Programme_Principal.h"
+#include "Programme Principal.h"
 
 //amélioration possible revenir en arrière dans le menu avec l'axe Y.
 
@@ -201,7 +201,7 @@ void setup_Menu(){
   lcd.print(MenuComplet[0][0].substring(0,4)+"  "+MenuComplet[0][1].substring(0,4)+"  "+MenuComplet[0][2].substring(0,4));
   lcd.setCursor(0, 1);
   lcd.write(byte(0));
-  Serial.begin(9600);
+  Serial.begin(57600);
 }
 void SetupSecMenu() {
 	lcd.clear();

@@ -3,6 +3,9 @@
 // 
 
 #include "UltrasonDetection.h"
+#include <SoftwareSerial.h>
+SoftwareSerial mySerial1(11, 12); // RX, TX//on informe le microcontrôleur que l'on utilise ses broches pour une connexion série
+
 
 //mesure de distance pour ultrason 
 float measureDistance(int echoPin, int trigPin) {
@@ -43,11 +46,12 @@ void setupDetection(){
   pinMode(trigPinAV, OUTPUT);
   pinMode(echoPinAV, INPUT);
   pinMode(Signal,OUTPUT);
+  mySerial1.begin(9600);
 }
 
 
 // fonction qui mesure la distance pour les 4 ultrasons et renvoit le plus petit
-float measureDistance4(){
+float measureDistance4(int num_direction){
   float distanceMin=0;
 	float distanceAR, distanceAV, distanceG, distanceD = 0;
 	distanceAR = measureDistance(echoPinAR, trigPinAR);
@@ -60,11 +64,22 @@ float measureDistance4(){
 
 
 
-Serial.println("  distance Avant =   " + String(distanceAV) + "   distance Droite =   " + String(distanceD) + "   distance Arrière =   " + String(distanceAR) + "   distance Gauche =   " + String(distanceG)+"\n");
-
-
-distanceMin = DetDistMin(distanceAV, distanceD, distanceAR, distanceG);
-Serial.println("distance min ="+String(distanceMin));
+Serial.println("   distAv =" + String(distanceAV) +  "   distAr =" + String(distanceAR) + "   distG =" + String(distanceG) +"   distD =" + String(distanceD));
+//mySerial1.println("   distAv =" + String(distanceAV) +  "   distAr =" + String(distanceAR) + "   distG =" + String(distanceG) +"   distD =" + String(distanceD));
+Serial.println(" numéro de direction = "+ num_direction);
+//détermination de la distance a regarder en fonction de la direction
+if(num_direction == 0){
+  distanceMin = DetDistMin(distanceAV, distanceD, distanceAR, distanceG);
+}else if(num_direction == 1){
+  distanceMin = distanceAV;
+}else if(num_direction == 2){
+  distanceMin = distanceAR;
+}else if(num_direction == 3){
+  distanceMin = distanceG;
+}else if(num_direction == 4){
+  distanceMin = distanceD;
+}
+//Serial.println("distance min ="+String(distanceMin));
 return distanceMin;
 }
 
@@ -206,14 +221,15 @@ bool verifDistance(float distance) {
 void SendSignal(bool decision) {
 	if (decision) {
   // c'est un signal qui regarde les fronts montants donc on va lui en donner plein:
-  for(int i = 0; i<10; i++){
-    digitalWrite(Signal, HIGH);
-   delay(50);
-   digitalWrite(Signal, LOW);
-   delay(50);
-  }
-		
-   Serial.print("signal envoyé");
+//  for(int i = 0; i<10; i++){
+//    digitalWrite(Signal, HIGH);
+//   delay(50);
+//   digitalWrite(Signal, LOW);
+//   delay(50);
+//  }
+	  digitalWrite(Signal, HIGH);
+
+ //  Serial.print("signal envoyé");
 	}
     
 	else {

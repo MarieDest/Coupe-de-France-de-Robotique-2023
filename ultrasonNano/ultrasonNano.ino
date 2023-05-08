@@ -6,18 +6,21 @@
 */
 
 #include "UltrasonDetection.h" 
+#include "Communication.h"
 
 
 float dist = 0;
 bool Decision = false;
+int valeur_direction = 0;
 void setup() {
 	setupDetection();
-	Serial.begin(9600); // // Serial Communication is starting with 9600 of baudrate speed
+	Serial.begin(57600); // // Serial Communication is starting with 9600 of baudrate speed
 }
 
 void loop() {
-	dist = measureDistance4();
+  valeur_direction = Comm();
+	dist = measureDistance4(valeur_direction);
 	Decision = dashDecision(dist, THRESHOLD);
 	SendSignal(Decision);
-	delay(500);
+	delay(50);
 }

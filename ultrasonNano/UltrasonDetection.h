@@ -3,11 +3,14 @@
 #ifndef _ULTRASONDETECTION_h
 #define _ULTRASONDETECTION_h
 
+
 #if defined(ARDUINO) && ARDUINO >= 100
 	#include "arduino.h"
 #else
 	#include "WProgram.h"
 #endif
+
+#include <SoftwareSerial.h>
 
 // avant =  (4,5)
 //gauche =  (8,9)
@@ -23,15 +26,15 @@
 #define trigPinD 6
 #define trigPinAV 4
 #define trigPinAR 2
-#define Signal 10
+#define Signal 13
 
 // defines variables 
 const int THRESHOLD = 30; //variable for the decision to stop or not 30cm
- 
 
+//defines methodes
 float measureDistance(int, int);
 bool dashDecision(float, float);
-float measureDistance4();
+float measureDistance4(int);
 void setupDetection();
 void SendSignal(bool);
 bool verifDistance(float);
