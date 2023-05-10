@@ -151,6 +151,7 @@ void SetCurrentEtage(){
   Serial.print(CurrentEtage);
   ChangeEtage = HIGH;
 }
+
 void Select_Menu_Value_Etage1(){
 
   if (zVal == 0 ) {
@@ -271,4 +272,26 @@ void select_Couleur() {
 	
 	}
 	SetChange();
+}
+void waitForTirette(){
+    lcd.clear();
+    if(!digitalRead(33)){
+      lcd.setCursor(0, 1);
+      lcd.print("Put tirette in");
+    }
+    do{
+      delay(10);
+    }while(!digitalRead(33));
+    lcd.clear();
+    lcd.setCursor(0, 1);
+    lcd.print("Tirette IN");
+    delay(1000);
+    if(digitalRead(33)){
+      lcd.setCursor(0, 1);
+      lcd.print("Pull tirette out");
+    }
+    do{
+      delay(10);
+    }while(digitalRead(33));
+    lcd.clear();
 }

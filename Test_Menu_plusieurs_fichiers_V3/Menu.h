@@ -46,5 +46,5 @@ void ChoisirCouleur();
 void setup_Couleur();
 void select_Couleur();
 void Set_Couleur();
-
+void waitForTirette();
 #endif //__Menu_H

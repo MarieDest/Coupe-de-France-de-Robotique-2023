@@ -15,7 +15,7 @@ String Programme_a_lancer[3][3] = {
 String Menu_str = "";
 bool relayOK = false;
 bool notInterrupted = true;
-
+const int Pin_Tirette = 33;
 void iSR()
 {
   if(notInterrupted && digitalRead(21)){
@@ -37,6 +37,7 @@ void iSR2()
 
 void setup() {
   pinMode(21,INPUT);
+  pinMode(Pin_Tirette , INPUT);
   setup_Menu();
   setup_Moteur();
   //setupRelay();
@@ -72,6 +73,7 @@ void loop() {
 		}
 	 delay(300);
    if(MenuChoisi){
+    waitForTirette();
 		// lancement du programme d�termin� dans le menu avant. 
 		switch (MenuEtage1) {
 		case 1 : 

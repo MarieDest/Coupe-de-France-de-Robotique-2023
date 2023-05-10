@@ -59,26 +59,10 @@ void Test_1M()
 
 void Test_360_degres()
 {
-//  digitalWrite(45, HIGH);
-//  digitalWrite(47, HIGH); 
-//  digitalWrite(49, HIGH);
-//  digitalWrite(X_ENABLE_PIN, LOW);
-//  digitalWrite(Y_ENABLE_PIN, LOW);
-//  digitalWrite(X_DIR_PIN, LOW);
-//  digitalWrite(Y_DIR_PIN, HIGH);
-//
-//  
-//
-//
-//	for (int i = 0; i <= (int) Nb_pas_pour_360deg; i++)
-//	{
-//		digitalWrite(Y_STEP_PIN, HIGH);
-//		delay(1);
-//		digitalWrite(Y_STEP_PIN, LOW);
-//	}
-  Droite(360);
+
+  Droite(180);
   delay(5000);
-  Gauche(360);
+  Gauche(180);
 	delay(99999999999);
 }
 void AvanceMM(int Nb_mm){
