@@ -25,6 +25,10 @@ void setup_Moteur();
 void setInterruption(bool noInterrupt);
 void Test_1M();
 void Test_360_degres();
+void Droite(int);
+void Gauche(int);
+void AvanceMM(int);
+void ReculeMM(int);
 void TestNull();
 
 #endif

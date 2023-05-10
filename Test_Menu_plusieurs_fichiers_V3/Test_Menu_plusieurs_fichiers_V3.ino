@@ -70,7 +70,7 @@ void loop() {
 				Serial.print(COULEUR);
 			}
 		}
-	 delay(150);
+	 delay(300);
    if(MenuChoisi){
 		// lancement du programme d�termin� dans le menu avant. 
 		switch (MenuEtage1) {
