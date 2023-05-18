@@ -273,7 +273,7 @@ void select_Couleur() {
 	}
 	SetChange();
 }
-void waitForTirette(){
+void waitForTirette(){ //input tirette = 33
     lcd.clear();
     if(!digitalRead(33)){
       lcd.setCursor(0, 1);

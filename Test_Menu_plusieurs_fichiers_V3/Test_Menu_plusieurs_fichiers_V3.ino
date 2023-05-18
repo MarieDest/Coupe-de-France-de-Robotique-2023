@@ -37,7 +37,7 @@ void iSR2()
 
 void setup() {
   pinMode(21,INPUT);
-  pinMode(Pin_Tirette , INPUT);
+  pinMode(Pin_Tirette , INPUT_PULLUP);
   setup_Menu();
   setup_Moteur();
   //setupRelay();

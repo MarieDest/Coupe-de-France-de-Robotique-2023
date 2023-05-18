@@ -169,13 +169,29 @@ void Droite(int degre){
   float nb_deg = (float) degre;
   int nb_pas = nb_deg * Nb_pas_pour_360deg *(1.0/360.0);
 
+int indice_stoped = 0;
+boolean interruption_moteur = false;
   Serial.println(" fonction Droite(deg) avec pour parametre : degre = "+(String) degre);
   Serial.println("nb_pas = "+(String) nb_pas);
   for (int i = 0; i <= nb_pas; i++)
   {
-    digitalWrite(X_STEP_PIN, HIGH);
-    delay(1);
-    digitalWrite(X_STEP_PIN, LOW);
+    if( notInterrupted_moteur){//digitalRead(21)==LOW   
+      if(interruption_moteur){
+        i = indice_stoped;
+        interruption_moteur = false;
+      }
+      digitalWrite(X_STEP_PIN, HIGH);
+      delay(1);
+      digitalWrite(X_STEP_PIN, LOW);
+    }else{
+      if(!interruption_moteur){
+        indice_stoped = i;
+        interruption_moteur = true;
+      }else{
+        delay(1);
+        i = i-1;
+      }
+    }
   }
 
 }
@@ -189,13 +205,30 @@ void Gauche(int degre){
   digitalWrite(Y_DIR_PIN, HIGH);
   float nb_deg = (float) degre;
   int nb_pas = nb_deg * Nb_pas_pour_360deg *(1.0/360.0);
+  
+int indice_stoped = 0;
+boolean interruption_moteur = false;
   Serial.println(" fonction Gauche avec pour parametre : degre = "+(String) degre);
   Serial.println("nb_pas = "+(String) nb_pas);
   for (int i = 0; i <= nb_pas; i++)
   {
+    if( notInterrupted_moteur){//digitalRead(21)==LOW   
+      if(interruption_moteur){
+        i = indice_stoped;
+        interruption_moteur = false;
+      }
     digitalWrite(Y_STEP_PIN, HIGH);
     delay(1);
     digitalWrite(Y_STEP_PIN, LOW);
+    }else{
+      if(!interruption_moteur){
+        indice_stoped = i;
+        interruption_moteur = true;
+      }else{
+        delay(1);
+        i = i-1;
+      }
+    }
   }
 
 }

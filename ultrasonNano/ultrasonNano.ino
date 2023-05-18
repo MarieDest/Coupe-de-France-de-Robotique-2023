@@ -6,7 +6,6 @@
 */
 
 #include "UltrasonDetection.h" 
-#include "Communication.h"
 
 
 float dist = 0;
@@ -18,8 +17,8 @@ void setup() {
 }
 
 void loop() {
-  valeur_direction = Comm();
-	dist = measureDistance4(valeur_direction);
+  
+	dist = measureDistance4();
 	Decision = dashDecision(dist, THRESHOLD);
 	SendSignal(Decision);
 	delay(50);

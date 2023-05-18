@@ -45,166 +45,65 @@ void setupDetection(){
   pinMode(echoPinAR, INPUT);
   pinMode(trigPinAV, OUTPUT);
   pinMode(echoPinAV, INPUT);
+  pinMode(trigPinAvG, OUTPUT);
+  pinMode(echoPinAvG, INPUT);
+  pinMode(trigPinAvD, OUTPUT);
+  pinMode(echoPinAvD, INPUT);
   pinMode(Signal,OUTPUT);
   mySerial1.begin(9600);
 }
 
 
 // fonction qui mesure la distance pour les 4 ultrasons et renvoit le plus petit
-float measureDistance4(int num_direction){
+float measureDistance4(){
   float distanceMin=0;
-	float distanceAR, distanceAV, distanceG, distanceD = 0;
+	float distanceAR, distanceAV, distanceG, distanceD,distanceAvD,distanceAvG = 0;
 	distanceAR = measureDistance(echoPinAR, trigPinAR);
 	distanceAV = measureDistance(echoPinAV, trigPinAV);
 	distanceG = measureDistance(echoPinG, trigPinG);
 	distanceD = measureDistance(echoPinD, trigPinD);
-  
-//	return max(max(distanceAR, distanceAV),max(distanceG,distanceD));
-	
+  distanceAvG = measureDistance(echoPinAvG, trigPinAvG); 
+  distanceAvD = measureDistance(echoPinAvD, trigPinAvD); 
+	distanceMin = DetDistMin(distanceAV, distanceD, distanceAR, distanceG,distanceAvD,distanceAvG);
 
+Serial.println("   distAv =" + String(distanceAV) +  "   distAr =" + String(distanceAR) + "   distG =" + String(distanceG) +"   distD =" + String(distanceD)+"   distAvD =" + String(distanceAvD)+"   distAvG =" + String(distanceAvG));
+//mySerial1.println("   distAv =" + String(distanceAV) +  "   distAr =" + String(distanceAR) + "   distG =" + String(distanceG) +"   distD =" + String(distanceD)+"   distAvD =" + String(distanceAvD)+"   distAvG =" + String(distanceAvG));
 
-
-Serial.println("   distAv =" + String(distanceAV) +  "   distAr =" + String(distanceAR) + "   distG =" + String(distanceG) +"   distD =" + String(distanceD));
-//mySerial1.println("   distAv =" + String(distanceAV) +  "   distAr =" + String(distanceAR) + "   distG =" + String(distanceG) +"   distD =" + String(distanceD));
-Serial.println(" numéro de direction = "+ num_direction);
-//détermination de la distance a regarder en fonction de la direction
-if(num_direction == 0){
-  distanceMin = DetDistMin(distanceAV, distanceD, distanceAR, distanceG);
-}else if(num_direction == 1){
-  distanceMin = distanceAV;
-}else if(num_direction == 2){
-  distanceMin = distanceAR;
-}else if(num_direction == 3){
-  distanceMin = distanceG;
-}else if(num_direction == 4){
-  distanceMin = distanceD;
-}
 //Serial.println("distance min ="+String(distanceMin));
 return distanceMin;
 }
 
 
-// détermination de la distance minimale entre les 4. faudra quand même vérifier le programme
-float DetDistMin(float distAV, float distD, float distAR, float distG) {
-	float test = -1;
-  /*
-	if (verifDistance(distAV)) {
-		test = distAV;
-		if (verifDistance(distD) && distAV > distD) {
-			test = distD;
-			if (verifDistance(distAR) && distAR > distD) {
-				test = distAR;
-				if (verifDistance(distG) && distG > distAR) {
-					test = distAR;
-				}
-			}
-			else {
-				if (verifDistance(distG) && distG > distAR) {
-					test = distAR;
-				}
-			}
-
-		}
-		else {
-			if (verifDistance(distAR) && distAR > distD) {
-				test = distAR;
-				if (verifDistance(distG) && distG > distAR) {
-					test = distAR;
-				}
-			}
-			else {
-				if (verifDistance(distG) && distG > distAR) {
-					test = distAR;
-				}
-			}
-		}
-	}
-	else {		
-		if (verifDistance(distD) && distAV > distD) {
-			test = distD;
-			if (verifDistance(distAR) && distAR > distD) {
-				test = distAR;
-				if (verifDistance(distG) && distG > distAR) {
-					test = distAR;
-				}
-			}
-			else {
-				if (verifDistance(distG) && distG > distAR) {
-					test = distAR;
-				}
-			}
-
-		}
-		else {
-			if (verifDistance(distAR) && distAR > distD) {
-				test = distAR;
-				if (verifDistance(distG) && distG > distAR) {
-					test = distAR;
-				}
-			}
-			else {
-				if (verifDistance(distG) && distG > distAR) {
-					test = distAR;
-				}
-			}
-		}
-	}
- */
- if (verifDistance(distG) && verifDistance(distD) && verifDistance(distAV)&& verifDistance(distAR)){
-    float test1 =  min(distG,distD);
-    float test2 = min(distAV,distAR);
-    test = min(test1,test2);
- }
- if(verifDistance(distG) && verifDistance(distD) && verifDistance(distAV)&& !verifDistance(distAR)){
-     float test1 =  min(distG,distD);
-     test = min(distAV,test1);
- }
-  if(verifDistance(distG) && verifDistance(distD) && verifDistance(distAR)&& !verifDistance(distAV)){
-     float test1 =  min(distG,distD);
-     test = min(distAR,test1);
- }
-  if(verifDistance(distG) && verifDistance(distAR) && verifDistance(distAV)&& !verifDistance(distD)){
-     float test1 =  min(distG,distAR);
-     test = min(distAV,test1);
- }
-  if(verifDistance(distAR) && verifDistance(distD) && verifDistance(distAV)&& !verifDistance(distG)){
-     float test1 =  min(distAR,distD);
-     test = min(distAV,test1);
- }
-  if (verifDistance(distG) && verifDistance(distD) && !verifDistance(distAV)&& !verifDistance(distAR)){
-    test =  min(distG,distD);
- }
-  if (verifDistance(distG) && !verifDistance(distD) && verifDistance(distAV)&& !verifDistance(distAR)){
-    test = min(distG,distAV);
- }
-  if (!verifDistance(distG) && verifDistance(distD) && verifDistance(distAV)&& !verifDistance(distAR)){
-    test = min(distD,distAV);
- }
-  if (verifDistance(distG) && !verifDistance(distD) && !verifDistance(distAV)&& verifDistance(distAR)){
-    test = min(distG,distAR);
- }
-  if (!verifDistance(distG) && !verifDistance(distD) && !verifDistance(distAV)&& verifDistance(distAR)){
-    test = min(distD,distAR);
- }
-  if (!verifDistance(distG) && !verifDistance(distD) && verifDistance(distAV)&& verifDistance(distAR)){
-    test = min(distAV,distAR);
- }
-  if (verifDistance(distG) && !verifDistance(distD) && !verifDistance(distAV)&& !verifDistance(distAR)){
-    test = distG;
- }
-  if (!verifDistance(distG) && verifDistance(distD) && !verifDistance(distAV)&& !verifDistance(distAR)){
-    test = distD;
- }
-  if (!verifDistance(distG) && !verifDistance(distD) && verifDistance(distAV)&& !verifDistance(distAR)){
-    test = distAV;
- }
-  if (!verifDistance(distG) && !verifDistance(distD) && !verifDistance(distAV)&& verifDistance(distAR)){
-    test = distAR;
- }
-  if (!verifDistance(distG) && !verifDistance(distD) && !verifDistance(distAV)&& !verifDistance(distAR)){
-    test = 0;
- }
-	return test;
+// détermination de la distance minimale entre les 6.
+float DetDistMin(float distAV, float distD, float distAR, float distG,float distAvD,float distAvG) {
+	float test = 999;
+ //float dist[6] = {distAV, distAR,distD, distG, distAvD, distAvG}; 
+ // for(int i = 0; i<6; i++){
+   if(distAV> 0){
+    test = min(test,distAV);
+   }
+   if(distAR>0){
+    test = min(test,distAR);
+   }
+   if(distD>0){
+    test = min(test,distD);
+   }
+   if(distG>0){
+    test=min(test,distG);
+   }
+   if(distAvD>0){
+    test = min(test,distAvD);
+   }
+   if(distAvG>0){
+    test = min(test, distAvG);
+   }
+ // }
+  if(test ==999){
+    return -1;
+  }else{
+    return test;
+  }
+	
 }
 
 //verification de la distance ( les ultrasons peuvent renvoyer 0.00 si la cible est trop loin ou si les câbles sont mal branchés)
@@ -228,6 +127,7 @@ void SendSignal(bool decision) {
 //   delay(50);
 //  }
 	  digitalWrite(Signal, HIGH);
+   
 
  //  Serial.print("signal envoyé");
 	}

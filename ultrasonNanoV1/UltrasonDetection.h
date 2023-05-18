@@ -5,9 +5,9 @@
 
 
 #if defined(ARDUINO) && ARDUINO >= 100
-	#include "arduino.h"
+  #include "arduino.h"
 #else
-	#include "WProgram.h"
+  #include "WProgram.h"
 #endif
 
 #include <SoftwareSerial.h>
@@ -22,20 +22,14 @@
 #define echoPinD 7
 #define echoPinAV 5
 #define echoPinAR 3
-#define echoPinAvD A3
-#define echoPinAvG A5
-
 #define trigPinG 8
 #define trigPinD 6
 #define trigPinAV 4
 #define trigPinAR 2
-#define trigPinAvD A2
-#define trigPinAvG A4
-
 #define Signal 13
 
 // defines variables 
-const int THRESHOLD = 50; //variable for the decision to stop or not 30cm
+const int THRESHOLD = 30; //variable for the decision to stop or not 30cm
 
 //defines methodes
 float measureDistance(int, int);
@@ -44,6 +38,6 @@ float measureDistance4();
 void setupDetection();
 void SendSignal(bool);
 bool verifDistance(float);
-float DetDistMin(float, float, float, float, float, float);
+float DetDistMin(float, float, float, float);
 
 #endif

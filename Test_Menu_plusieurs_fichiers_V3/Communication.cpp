@@ -2,6 +2,7 @@
 #include "Communication.h"
 #include "Programme Principal.h"
 #include "Tests.h"
+#include <SoftwareSerial.h>
 
 int incomingByte ;      
 char myStr[1000];
@@ -13,13 +14,14 @@ String Message = "";
 int idx0,idx1,idx2,idx3;
 String distAvStr,distArStr,distGStr,distDStr;
 int distAv,distAr,distG,distD;
-//HardwareSerial SerialBrain(3); // RX, TX//on informe le microcontrôleur que l'on utilise ses broches pour une connexion série
+SoftwareSerial SoftSerial(28,26); // RX, TX//on informe le microcontrôleur que l'on utilise ses broches pour une connexion série
 
 
 String keyWords[] = {"  distAv =","   distAr =","   distG =","   distD ="};
 String Etat = "";
 void setupComm(){
   Serial3.begin(9600);
+  SoftSerial.begin(9600);
 }
 void setEtat(String Etat_Value){
   Etat = Etat_Value;
@@ -49,6 +51,9 @@ void Comm() {
 }
 void printSerial(String message){
   Serial3.println(message);
+}
+void printSoftSerial(String message){
+  SoftSerial.println(message);
 }
 void RecupMessage(String message){
   

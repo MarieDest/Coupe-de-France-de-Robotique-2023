@@ -12,6 +12,7 @@ void setupComm();
 void setEtat(String Etat_Value);
 void Comm();
 void printSerial(String message);
+void printSoftSerial(String message);
 void RecupMessage(String message);
 void condition();
 
